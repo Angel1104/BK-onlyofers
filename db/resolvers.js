@@ -1,5 +1,8 @@
 const Empresa = require('../models/Empresa');
 const Producto = require('../models/Producto');
+const Cliente = require('../models/Cliente');
+const Vendedor = require('../models/Vendedor');
+
 
 //resolvers
 const resolvers = {
@@ -34,7 +37,38 @@ const resolvers = {
                 throw new Error('Producto no encontrado');
             }
             return producto
+        },
+        obtenerCliente: async (_,{id}) =>{
+            const cliente = await Cliente.findById(id);
+            if(!cliente){
+                throw new Error('Cliente no encontrado');
+            }
+            return cliente
+        },
+        obtenerClientes: async ()=>{
+            try {
+                const clientes = await Cliente.find({});
+                return clientes;
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        obtenerVendedor: async (_,{id}) =>{
+            const vendedor = await Vendedor.findById(id);
+            if(!vendedor){
+                throw new Error('Vendedor no encontrado');
+            }
+            return vendedor
+        },
+        obtenerVendedores: async ()=>{
+            try {
+                const vendedores = await Vendedor.find({});
+                return vendedores;
+            } catch (error) {
+                console.log(error)
+            }
         }
+
     },
     Mutation : {
         nuevaEmpresa : async (_,{input})=> {
@@ -104,6 +138,84 @@ const resolvers = {
             //eliminar
             await Producto.findOneAndDelete({_id : id});
             return 'Producto eliminado';
+        },
+
+        //desde acá
+        nuevoCliente : async (_,{input})=> {
+            const{nombre, apellido} = input;
+
+            //Verificar Cliente Registrado
+            const existeNombre = await Cliente.findOne({nombre});
+            const existeApellido = await Cliente.findOne({apellido});
+            if (existeNombre && existeApellido){
+                throw new Error('El Cliente ya se encuentra registrado')
+            }
+
+            try {
+                const cliente = new Cliente(input);
+                const resultado = cliente.save();
+                return resultado;
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        actualizarCliente: async (_,{id, input})=>{
+            //revisar existencia
+            let cliente = await Cliente.findById(id);
+            if (!cliente) {
+                throw new Error('Cliente no Encontrado');
+            }
+            //guardamos
+            cliente = await Cliente.findOneAndUpdate({_id:id },input, {new:true});
+            return cliente;
+        },
+        eliminarCliente: async(_,{id})=>{
+             //revisar existencia
+             const cliente = await Cliente.findById(id);
+             if (!cliente) {
+                 throw new Error('Cliente No Encontrado');
+             }
+             //eliminamos
+             await Cliente.findOneAndDelete({_id: id});
+             return "Cliente eliminado";
+        },
+        nuevoVendedor : async (_,{input})=> {
+            const{nombre, apellido} = input;
+
+            //Verificar Cliente Registrado
+            const existeNombre = await Vendedor.findOne({nombre});
+            const existeApellido = await Vendedor.findOne({apellido});
+            if (existeNombre && existeApellido){
+                throw new Error('El Vendedor ya se encuentra registrado')
+            }
+
+            try {
+                const vendedor = new Vendedor(input);
+                const resultado = vendedor.save();
+                return resultado;
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        actualizarVendedor: async (_,{id, input})=>{
+            //revisar existencia
+            let vendedor = await Vendedor.findById(id);
+            if (!vendedor) {
+                throw new Error('Vendedor no Encontrado');
+            }
+            //guardamos
+            vendedor = await Vendedor.findOneAndUpdate({_id:id },input, {new:true});
+            return vendedor;
+        },
+        eliminarVendedor: async(_,{id})=>{
+             //revisar existencia
+             const vendedor = await Vendedor.findById(id);
+             if (!vendedor) {
+                 throw new Error('Vendedor No Encontrado');
+             }
+             //eliminamos
+             await Vendedor.findOneAndDelete({_id: id});
+             return "Vendedor eliminado";
         }
     }
 }

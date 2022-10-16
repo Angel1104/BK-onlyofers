@@ -40,6 +40,43 @@ const typeDefs = gql`
         fecha_vencimiento: String!
     }
     
+    type Cliente {
+        id: ID
+        nombre: String
+        apellido: String
+        telefono: Int
+        correo: String
+        contrasenia: String
+        edad: Int
+    }
+
+    input ClienteInput{
+        nombre: String!
+        apellido: String!
+        telefono: Int!
+        correo: String!
+        contrasenia: String!
+        edad: Int!
+    }
+
+    type Vendedor {
+        id: ID
+        nombre: String
+        apellido: String
+        telefono: Int
+        correo: String
+        contrasenia: String
+        edad: Int
+    }
+
+    input VendedorInput{
+        nombre: String!
+        apellido: String!
+        telefono: Int!
+        correo: String!
+        contrasenia: String!
+        edad: Int!
+    }
 
     type Query {
         #empresas
@@ -49,6 +86,14 @@ const typeDefs = gql`
         #productos
         obtenerProducto(id: ID!): Producto
         obtenerProductos: [Producto]
+
+        #clientes
+        obtenerCliente(id: ID!): Cliente
+        obtenerClientes: [Cliente]
+
+        #vendedores
+        obtenerVendedor(id: ID!): Vendedor
+        obtenerVendedores: [Vendedor]
     }
 
 
@@ -62,6 +107,17 @@ const typeDefs = gql`
         nuevoProducto(input: ProductoInput): Producto
         actualizarProducto( id: ID!, input: ProductoInput ):Producto
         eliminarProducto(id: ID!):String
+
+        #cliente
+        nuevoCliente(input: ClienteInput): Cliente
+        actualizarCliente(id: ID!, input: ClienteInput ): Cliente
+        eliminarCliente(id: ID!): String
+
+        #vendedor
+        nuevoVendedor(input: VendedorInput): Vendedor
+        actualizarVendedor(id: ID!, input: VendedorInput ): Vendedor
+        eliminarVendedor(id: ID!): String
+
     }
 `;
 
