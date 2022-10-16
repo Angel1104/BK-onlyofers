@@ -98,7 +98,13 @@ const typeDefs = gql`
         actualizarProducto( id: ID!, input: ProductoInput ):Producto
         eliminarProducto(id: ID!):String
 
+        #tipoProducto
+        nuevoTipoProducto(input: TipoProductoInput): TipoProducto
+        eliminarTipoProducto(id: ID!):String 
 
+        #tipoEmpresa
+        nuevoTipoEmpresa(input: TipoEmpresaInput): TipoEmpresa
+        eliminarTipoEmpresa(id: ID!):String 
     }
 `;
 

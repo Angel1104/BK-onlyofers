@@ -131,7 +131,63 @@ const resolvers = {
             //eliminar
             await Producto.findOneAndDelete({_id : id});
             return 'Producto eliminado';
-        }
+        },
+        nuevoTipoProducto : async (_,{input})=> {
+            const{tipo_producto} = input;
+
+            //usuario registrado?
+            const existeTipoProducto = await TipoProducto.findOne({tipo_producto});
+            if (existeTipoProducto){
+                throw new Error('El Tipo de Producto ya Existe')
+            }
+
+            //guardar en bd
+            try {
+                const tipoProducto = new TipoProducto(input);
+                const resultado = tipoProducto.save();
+                return resultado;
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        eliminarTipoProducto: async (_,{id})=>{
+            //verificar existencia
+            const tipoProducto = await TipoProducto.findById(id);
+            if(!tipoProducto){
+                throw new Error('Tipo Producto no existente');
+            }
+            //eliminar
+            await TipoProducto.findOneAndDelete({_id : id});
+            return 'Tipo de Producto eliminado';
+        },
+        nuevoTipoEmpresa : async (_,{input})=> {
+            const{tipo_empresa} = input;
+
+            //usuario registrado?
+            const existeTipoEmpresa = await TipoEmpresa.findOne({tipo_empresa});
+            if (existeTipoEmpresa){
+                throw new Error('El Tipo de Empresa ya Existe')
+            }
+
+            //guardar en bd
+            try {
+                const tipoEmpresa = new TipoEmpresa(input);
+                const resultado = tipoEmpresa.save();
+                return resultado;
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        eliminarTipoEmpresa: async (_,{id})=>{
+            //verificar existencia
+            const tipoEmpresa = await TipoEmpresa.findById(id);
+            if(!tipoEmpresa){
+                throw new Error('Tipo de Empresa no existente');
+            }
+            //eliminar
+            await TipoEmpresa.findOneAndDelete({_id : id});
+            return 'Tipo de Empresa eliminado';
+        },
     }
 }
 
