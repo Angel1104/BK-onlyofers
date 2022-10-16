@@ -187,7 +187,7 @@ const resolvers = {
             //eliminar
             await TipoEmpresa.findOneAndDelete({_id : id});
             return 'Tipo de Empresa eliminado';
-        },
+        }
     }
 }
 
