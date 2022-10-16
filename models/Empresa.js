@@ -20,6 +20,12 @@ const EmpresaSchema = mongoose.Schema({
     creado: {
         type: Date,
         default: Date.now()
+    },
+    telefono: {
+        type: Number,
+        require: true,
+        unique: true,
+        trim: true
     }
 });
 
