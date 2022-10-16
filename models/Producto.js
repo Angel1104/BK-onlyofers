@@ -30,6 +30,20 @@ const ProductosSchema = mongoose.Schema({
         type: Number,
         require: true,
         trim: true
+    },
+    tipo_producto: {
+        type: mongoose.Schema.Types.ObjectId,
+        require: true,
+        ref : 'TipoProducto'
+    },
+    empresa: {
+        type: mongoose.Schema.Types.ObjectId,
+        require: true,
+        ref: 'Empresa'
+    },
+    estado: {
+        type:String,
+        default: "DISPONIBLE"
     }
 });
 

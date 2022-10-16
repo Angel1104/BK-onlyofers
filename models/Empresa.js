@@ -26,6 +26,11 @@ const EmpresaSchema = mongoose.Schema({
         require: true,
         unique: true,
         trim: true
+    },
+    tipo_empresa:{
+        type: mongoose.Schema.Types.ObjectId,
+        require: true,
+        ref: 'TipoEmpresa'
     }
 });
 

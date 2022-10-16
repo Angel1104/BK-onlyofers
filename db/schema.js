@@ -11,6 +11,7 @@ const typeDefs = gql`
         direccion_empresa: String
         creado: String
         telefono: Int
+        tipo_empresa : ID
     }
 
     input EmpresaInput {
@@ -18,6 +19,23 @@ const typeDefs = gql`
         numero_sucursal: Int!
         direccion_empresa: String!
         telefono: Int!
+        tipo_empresa : ID!
+    }
+    type TipoEmpresa {
+        id: ID
+        tipo_empresa : String
+    }
+    input TipoEmpresaInput {
+        tipo_empresa : String!
+    }
+
+
+    type TipoProducto {
+        id: ID
+        tipo_producto : String
+    }
+    input TipoProductoInput {
+        tipo_producto : String!
     }
 
     type Producto {
@@ -29,6 +47,9 @@ const typeDefs = gql`
         fecha_elaboracion: String
         fecha_vencimiento: String
         creado: String
+        tipo_producto: ID
+        empresa : ID
+        estado: EstadoProducto
     }
 
     input ProductoInput{
@@ -38,6 +59,13 @@ const typeDefs = gql`
         existencia: Int!
         fecha_elaboracion: String!
         fecha_vencimiento: String!
+        tipo_producto: ID!
+        empresa: ID!
+        estado: EstadoProducto
+    }
+    enum EstadoProducto {
+        DISPONIBLE
+        TERMINADO
     }
     
 
@@ -46,9 +74,15 @@ const typeDefs = gql`
         obtenerEmpresa(id: ID!): Empresa
         obtenerEmpresas: [Empresa]
 
+        #tipoempresas
+        obtenerTiposEmpresas: [TipoEmpresa]
+
         #productos
         obtenerProducto(id: ID!): Producto
         obtenerProductos: [Producto]
+
+        #tipoProducto
+        obtenerTiposProductos: [TipoProducto]
     }
 
 
@@ -62,6 +96,8 @@ const typeDefs = gql`
         nuevoProducto(input: ProductoInput): Producto
         actualizarProducto( id: ID!, input: ProductoInput ):Producto
         eliminarProducto(id: ID!):String
+
+        
     }
 `;
 

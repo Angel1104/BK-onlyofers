@@ -1,5 +1,7 @@
 const Empresa = require('../models/Empresa');
 const Producto = require('../models/Producto');
+const TipoEmpresa = require('../models/TipoEmpresa');
+const TipoProducto = require('../models/TipoProducto');
 
 //resolvers
 const resolvers = {
@@ -34,6 +36,22 @@ const resolvers = {
                 throw new Error('Producto no encontrado');
             }
             return producto
+        },
+        obtenerTiposProductos: async()=>{
+            try {
+                const tipo_productos = await TipoProducto.find({});
+                return tipo_productos;
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        obtenerTiposEmpresas: async()=>{
+            try {
+                const tipo_empresa = await TipoEmpresa.find({});
+                return tipo_empresa;
+            } catch (error) {
+                console.log(error)
+            }
         }
     },
     Mutation : {
@@ -77,6 +95,7 @@ const resolvers = {
              return "Empresa eliminada";
         },
         nuevoProducto: async (_,{input})=>{
+            //guardar
             try {
                 const producto = new Producto(input);
                 const resultado = producto.save();
