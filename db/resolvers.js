@@ -52,6 +52,14 @@ const resolvers = {
             } catch (error) {
                 console.log(error)
             }
+        },
+        obtenerProductosEstado: async (_,{estado})=>{
+            try {
+                const producto = await Producto.find({estado: estado})
+                return producto;
+            } catch (error) {
+                console.log(error)
+            }
         }
     },
     Mutation : {

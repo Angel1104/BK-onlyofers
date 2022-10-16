@@ -80,6 +80,7 @@ const typeDefs = gql`
         #productos
         obtenerProducto(id: ID!): Producto
         obtenerProductos: [Producto]
+        obtenerProductosEstado(estado: String!): [Producto]
 
         #tipoProducto
         obtenerTiposProductos: [TipoProducto]
@@ -97,7 +98,7 @@ const typeDefs = gql`
         actualizarProducto( id: ID!, input: ProductoInput ):Producto
         eliminarProducto(id: ID!):String
 
-        
+
     }
 `;
 
