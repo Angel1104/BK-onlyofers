@@ -47,8 +47,8 @@ const typeDefs = gql`
         fecha_elaboracion: String
         fecha_vencimiento: String
         creado: String
-        tipo_producto: ID
-        empresa : ID
+        tipo_producto: String
+        empresa : String
         estado: EstadoProducto
     }
 
@@ -59,8 +59,8 @@ const typeDefs = gql`
         existencia: Int!
         fecha_elaboracion: String!
         fecha_vencimiento: String!
-        tipo_producto: ID!
-        empresa: ID!
+        tipo_producto: String!
+        empresa: String!
         estado: EstadoProducto
     }
     enum EstadoProducto {
