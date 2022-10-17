@@ -28,7 +28,7 @@ const EmpresaSchema = mongoose.Schema({
         trim: true
     },
     tipo_empresa:{
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.String,
         require: true,
         ref: 'TipoEmpresa'
     }

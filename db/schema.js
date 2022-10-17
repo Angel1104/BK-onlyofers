@@ -11,7 +11,7 @@ const typeDefs = gql`
         direccion_empresa: String
         creado: String
         telefono: Int
-        tipo_empresa : ID
+        tipo_empresa : String
     }
 
     input EmpresaInput {
@@ -19,7 +19,7 @@ const typeDefs = gql`
         numero_sucursal: Int!
         direccion_empresa: String!
         telefono: Int!
-        tipo_empresa : ID!
+        tipo_empresa : String!
     }
     type TipoEmpresa {
         id: ID
