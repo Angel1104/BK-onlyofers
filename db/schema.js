@@ -11,7 +11,7 @@ const typeDefs = gql`
         direccion_empresa: String
         creado: String
         telefono: Int
-        tipo_empresa : ID
+        tipo_empresa : String
     }
 
     input EmpresaInput {
@@ -19,7 +19,7 @@ const typeDefs = gql`
         numero_sucursal: Int!
         direccion_empresa: String!
         telefono: Int!
-        tipo_empresa : ID!
+        tipo_empresa : String!
     }
     type TipoEmpresa {
         id: ID
@@ -47,8 +47,8 @@ const typeDefs = gql`
         fecha_elaboracion: String
         fecha_vencimiento: String
         creado: String
-        tipo_producto: ID
-        empresa : ID
+        tipo_producto: String
+        empresa : String
         estado: EstadoProducto
     }
 
@@ -59,8 +59,8 @@ const typeDefs = gql`
         existencia: Int!
         fecha_elaboracion: String!
         fecha_vencimiento: String!
-        tipo_producto: ID!
-        empresa: ID!
+        tipo_producto: String!
+        empresa: String!
         estado: EstadoProducto
     }
     enum EstadoProducto {

@@ -32,12 +32,12 @@ const ProductosSchema = mongoose.Schema({
         trim: true
     },
     tipo_producto: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.String,
         require: true,
         ref : 'TipoProducto'
     },
     empresa: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.String,
         require: true,
         ref: 'Empresa'
     },
