@@ -126,7 +126,7 @@ const resolvers = {
             //verificar existencia
             const producto = await Producto.findById(id);
             if(!producto){
-                throw new Error('Producto no encontrado');
+                throw new Error('El Producto no se encontro');
             }
             //eliminar
             await Producto.findOneAndDelete({_id : id});
@@ -135,10 +135,10 @@ const resolvers = {
         nuevoTipoProducto : async (_,{input})=> {
             const{tipo_producto} = input;
 
-            //usuario registrado?
+            //tipo de producto 
             const existeTipoProducto = await TipoProducto.findOne({tipo_producto});
             if (existeTipoProducto){
-                throw new Error('El Tipo de Producto ya Existe')
+                throw new Error('No puedes registrar un producto existente')
             }
 
             //guardar en bd
@@ -154,7 +154,7 @@ const resolvers = {
             //verificar existencia
             const tipoProducto = await TipoProducto.findById(id);
             if(!tipoProducto){
-                throw new Error('Tipo Producto no existente');
+                throw new Error('El Tipo de Producto no existe');
             }
             //eliminar
             await TipoProducto.findOneAndDelete({_id : id});
@@ -163,7 +163,7 @@ const resolvers = {
         nuevoTipoEmpresa : async (_,{input})=> {
             const{tipo_empresa} = input;
 
-            //usuario registrado?
+            //verificar existencia
             const existeTipoEmpresa = await TipoEmpresa.findOne({tipo_empresa});
             if (existeTipoEmpresa){
                 throw new Error('El Tipo de Empresa ya Existe')
@@ -182,7 +182,7 @@ const resolvers = {
             //verificar existencia
             const tipoEmpresa = await TipoEmpresa.findById(id);
             if(!tipoEmpresa){
-                throw new Error('Tipo de Empresa no existente');
+                throw new Error('El Tipo de Empresa no existe');
             }
             //eliminar
             await TipoEmpresa.findOneAndDelete({_id : id});
