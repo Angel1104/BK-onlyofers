@@ -7,5 +7,5 @@ const TipoProductoSchema = mongoose.Schema({
         trim: true
     }
 });
-
+{}
 module.exports = mongoose.model('TipoProducto', TipoProductoSchema);
