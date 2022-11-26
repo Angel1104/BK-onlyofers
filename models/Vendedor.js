@@ -14,6 +14,7 @@ const VendedorSchema = mongoose.Schema({
     correo_vendedor:{
         type: String,
         require: true,
+        unique: true,
         trim: true
     },
     contrasenia_vendedor:{
