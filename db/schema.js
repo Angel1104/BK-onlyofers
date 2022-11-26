@@ -50,6 +50,7 @@ const typeDefs = gql`
         tipo_producto: String
         empresa : String
         estado: EstadoProducto
+        imagen: String
     }
 
     input ProductoInput{
@@ -62,12 +63,44 @@ const typeDefs = gql`
         tipo_producto: String!
         empresa: String!
         estado: EstadoProducto
+        imagen: String!
     }
     enum EstadoProducto {
         DISPONIBLE
         TERMINADO
     }
     
+    type Vendedor{
+        id: ID
+        nombre_vendedor: String
+        apellido_vendedor: String
+        correo_vendedor: String
+        contrasenia_vendedor: String
+        NIT: Int
+    }
+
+    input VendedorInput{
+        nombre_vendedor: String!
+        apellido_vendedor: String!
+        correo_vendedor: String!
+        contrasenia_vendedor: String!
+        NIT: Int!
+    }
+
+    type Cliente{
+        id: ID
+        nombre_cliente: String
+        apellido_cliente: String
+        correo_cliente: String
+        contrasenia_cliente: String
+    }
+
+    input ClienteInput{
+        nombre_cliente: String!
+        apellido_cliente: String!
+        correo_cliente: String!
+        contrasenia_cliente: String!
+    }
 
     type Query {
         #empresas
@@ -84,6 +117,14 @@ const typeDefs = gql`
 
         #tipoProducto
         obtenerTiposProductos: [TipoProducto]
+
+        #vendedores
+        obtenerVendedor(correo_vendedor: String!): Vendedor
+        obtenerVendedores: [Vendedor]
+
+        #clientes
+        obtenerCliente(correo_cliente: String!): Cliente
+        obtenerClientes: [Cliente]
     }
 
 
@@ -105,6 +146,16 @@ const typeDefs = gql`
         #tipoEmpresa
         nuevoTipoEmpresa(input: TipoEmpresaInput): TipoEmpresa
         eliminarTipoEmpresa(id: ID!):String 
+
+        #vendedor
+        nuevoVendedor(input: VendedorInput) : Vendedor
+        actualizarVendedor(id: ID!, input: VendedorInput): Vendedor
+        eliminarVendedor(id: ID!): String
+
+        #cliente
+        nuevoCliente(input: ClienteInput): Cliente
+        actualizarCliente(id: ID!, input: VendedorInput):String
+        eliminarCliente(id: ID!): String
     }
 `;
 

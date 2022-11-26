@@ -1,7 +1,10 @@
+const Cliente = require('../models/Cliente');
 const Empresa = require('../models/Empresa');
 const Producto = require('../models/Producto');
 const TipoEmpresa = require('../models/TipoEmpresa');
 const TipoProducto = require('../models/TipoProducto');
+const Vendedor = require('../models/Vendedor');
+
 
 //resolvers
 const resolvers = {
@@ -37,6 +40,38 @@ const resolvers = {
             }
             return producto
         },
+        obtenerVendedores: async () =>{
+            try{
+                const vendedores = await Vendedor.find({})
+                return vendedores;
+            } catch (error){
+                console.log(error);
+            }
+        },
+        obtenerVendedor: async(_,{correo_vendedor}) =>{
+            try{
+            const vendedor = await Vendedor.find({correo_vendedor: correo_vendedor})
+            return vendedor;
+            } catch (error){
+                console.log(error);
+            }
+        },
+        obtenerClientes: async () =>{
+            try{
+                const clientes = await clientes.find({})
+                return clientes;
+            } catch (error){
+                console.log(error);
+            }
+        },
+        obtenerCliente: async(_,{correo_cliente}) =>{
+            try{
+            const cliente = await Vendedor.find({correo_cliente: correo_cliente})
+            return cliente;
+            } catch (error){
+                console.log(error);
+            }
+        },
         obtenerTiposProductos: async()=>{
             try {
                 const tipo_productos = await TipoProducto.find({});
@@ -63,6 +98,79 @@ const resolvers = {
         }
     },
     Mutation : {
+        nuevoVendedor: async (_,{input}) => {
+            const{correo_vendedor} = input;
+            //vendedor registrado?
+            const existecorreo = await Vendedor.findOne({correo_vendedor});
+            if(existecorreo){
+                throw new Error('El correo ya esta registrado')
+            }
+
+            //guardar en bd
+            try{
+                const vendedor = new Vendedor(input);
+                const resultado = vendedor.save();
+                return resultado;
+            }catch (error){
+                console.log(error)
+            }
+        },
+        actualizarVendedor: async(_,{id, input}) => {
+            let vendedor = await Vendedor.findById(id);
+            if (!vendedor) {
+                throw new Error('Vendedor no encontrado');
+            }
+            //guardamos
+            vendedor = await Vendedor.findOneAndUpdate({_id:id },input, {new:true});
+            return vendedor;
+        },
+        eliminarVendedor: async(_,{id})=>{
+            //revisar existencia
+            const vendedor = await Vendedor.findById(id);
+            if (!vendedor) {
+                throw new Error('Vendedor no encontrado');
+            }
+            //eliminamos
+            await Vendedor.findOneAndDelete({_id: id});
+            return "Vendedor eliminada";
+       },
+
+       nuevoCliente: async (_,{input}) => {
+        const{correo_cliente} = input;
+        //cliente registrado?
+        const existecorreo = await Cliente.findOne({correo_cliente});
+        if(existecorreo){
+            throw new Error('El correo ya esta registrado')
+        }
+
+        //guardar en bd
+        try{
+            const cliente = new Cliente(input);
+            const resultado = cliente.save();
+            return resultado;
+        }catch (error){
+            console.log(error)
+        }
+    },
+    actualizarCliente: async(_,{id, input}) => {
+        let vendedor = await Cliente.findById(id);
+        if (!vendedor) {
+            throw new Error('Cliente no encontrado');
+        }
+        //guardamos
+        vendedor = await Cliente.findOneAndUpdate({_id:id },input, {new:true});
+        return vendedor;
+    },
+    eliminarCliente: async(_,{id})=>{
+        //revisar existencia
+        const vendedor = await Cliente.findById(id);
+        if (!vendedor) {
+            throw new Error('Cliente no encontrado');
+        }
+        //eliminamos
+        await Cliente.findOneAndDelete({_id: id});
+        return "Cliente eliminada";
+   },
         nuevaEmpresa : async (_,{input})=> {
             const{nombre_empresa, numero_sucursal} = input;
 
