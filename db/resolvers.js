@@ -103,7 +103,7 @@ const resolvers = {
             //vendedor registrado?
             const existecorreo = await Vendedor.findOne({correo_vendedor});
             if(existecorreo){
-                throw new Error('El correo ya esta registrado')
+               throw new Error('El correo ya esta registrado');
             }
 
             //guardar en bd
