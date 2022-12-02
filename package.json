@@ -19,7 +19,9 @@
   "homepage": "https://github.com/Angel1104/BK-onlyofers#readme",
   "dependencies": {
     "apollo-server": "^3.10.3",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.6.5"
   },
   "devDependencies": {
