@@ -50,7 +50,7 @@ const resolvers = {
         },
         obtenerVendedor: async(_,{correo_vendedor}) =>{
             try{
-            const vendedor = await Vendedor.find({correo_vendedor: correo_vendedor})
+            const vendedor = await Vendedor.findOne({correo_vendedor})
             return vendedor;
             } catch (error){
                 console.log(error);
@@ -58,7 +58,7 @@ const resolvers = {
         },
         obtenerClientes: async () =>{
             try{
-                const clientes = await clientes.find({})
+                const clientes = await Cliente.find({})
                 return clientes;
             } catch (error){
                 console.log(error);
@@ -66,7 +66,7 @@ const resolvers = {
         },
         obtenerCliente: async(_,{correo_cliente}) =>{
             try{
-            const cliente = await Vendedor.find({correo_cliente: correo_cliente})
+            const cliente = await Cliente.findOne({correo_cliente})
             return cliente;
             } catch (error){
                 console.log(error);
