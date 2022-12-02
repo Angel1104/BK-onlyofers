@@ -115,6 +115,7 @@ const resolvers = {
                 console.log(error)
             }
         },
+        
         actualizarVendedor: async(_,{id, input}) => {
             let vendedor = await Vendedor.findById(id);
             if (!vendedor) {
