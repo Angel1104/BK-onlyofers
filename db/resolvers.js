@@ -4,7 +4,20 @@ const Producto = require('../models/Producto');
 const TipoEmpresa = require('../models/TipoEmpresa');
 const TipoProducto = require('../models/TipoProducto');
 const Vendedor = require('../models/Vendedor');
+const bcryptjs = require('bcryptjs');
+require('dotenv').config({path: 'variables.env'});
+const jwt = require('jsonwebtoken');
 
+const crearTokenVendedor = (usuario,secreta,expiresIn)=>{
+    console.log(usuario);
+    const {id,correo_vendedor,nombre_vendedor,NIT,contrasenia_vendedor}=usuario;
+    return jwt.sign({id,correo_vendedor,nombre_vendedor,NIT,contrasenia_vendedor},secreta,{expiresIn})
+}
+const crearTokenCliente = (usuario,secreta,expiresIn)=>{
+    console.log(usuario);
+    const {id,correo_cliente,contrasenia_cliente}=usuario;
+    return jwt.sign({id,correo_cliente,contrasenia_cliente},secreta,{expiresIn})
+}
 
 //resolvers
 const resolvers = {
@@ -56,6 +69,10 @@ const resolvers = {
                 console.log(error);
             }
         },
+        obtenerVendedorToken: async (_,{token})=>{
+            const usuarioID = await jwt.verify(token, process.env.SECRETA)
+            return usuarioID
+        },
         obtenerClientes: async () =>{
             try{
                 const clientes = await Cliente.find({})
@@ -71,6 +88,10 @@ const resolvers = {
             } catch (error){
                 console.log(error);
             }
+        },
+        obtenerClienteToken: async (_,{token})=>{
+            const usuarioID = await jwt.verify(token, process.env.SECRETA)
+            return usuarioID
         },
         obtenerTiposProductos: async()=>{
             try {
@@ -99,12 +120,18 @@ const resolvers = {
     },
     Mutation : {
         nuevoVendedor: async (_,{input}) => {
-            const{correo_vendedor} = input;
+
+            const{correo_vendedor, contrasenia_vendedor} = input;
             //vendedor registrado?
             const existecorreo = await Vendedor.findOne({correo_vendedor});
             if(existecorreo){
                throw new Error('El correo ya esta registrado');
             }
+
+            // hash password
+            const salt = await bcryptjs.genSalt(10);
+            input.contrasenia_vendedor = await bcryptjs.hash(contrasenia_vendedor, salt);
+
 
             //guardar en bd
             try{
@@ -115,6 +142,7 @@ const resolvers = {
                 console.log(error)
             }
         },
+
         actualizarVendedor: async(_,{id, input}) => {
             let vendedor = await Vendedor.findById(id);
             if (!vendedor) {
@@ -134,15 +162,42 @@ const resolvers = {
             await Vendedor.findOneAndDelete({_id: id});
             return "Vendedor eliminada";
        },
+        autenticarVendedor: async(_,{input})=>{
+            
+            const {correo_vendedor, contrasenia_vendedor,NIT}=input
+            //si el usuario existe
+            const existeVendedor = await Vendedor.findOne({correo_vendedor});
+            if(!existeVendedor){
+                throw new Error('El usuario no existe')
+            }
+            //Revisar pass correcto
+            const contraCorrecta= await bcryptjs.compare(contrasenia_vendedor,existeVendedor.contrasenia_vendedor);
+            if (!contraCorrecta) {
+                throw new Error('La constraseña es incorrecta')
+            }
+            //revisar nit
+            const nitCorrecto= await Vendedor.findOne({NIT});
+            if(!nitCorrecto){
+                throw new Error('El NIT es incorrecto')
+            }
+            //crear token
+            return{
+                token: crearTokenVendedor(existeVendedor, process.env.SECRETA, '48h')
 
-       nuevoCliente: async (_,{input}) => {
-        const{correo_cliente} = input;
+            }
+       },
+        nuevoCliente: async (_,{input}) => {
+        const{correo_cliente, contrasenia_cliente} = input;
         //cliente registrado?
         const existecorreo = await Cliente.findOne({correo_cliente});
         if(existecorreo){
             throw new Error('El correo ya esta registrado')
         }
 
+        // hash password
+        const salt = await bcryptjs.genSalt(10);
+        input.contrasenia_cliente = await bcryptjs.hash(contrasenia_cliente, salt);
+        
         //guardar en bd
         try{
             const cliente = new Cliente(input);
@@ -151,26 +206,44 @@ const resolvers = {
         }catch (error){
             console.log(error)
         }
-    },
-    actualizarCliente: async(_,{id, input}) => {
-        let vendedor = await Cliente.findById(id);
-        if (!vendedor) {
-            throw new Error('Cliente no encontrado');
-        }
-        //guardamos
-        vendedor = await Cliente.findOneAndUpdate({_id:id },input, {new:true});
-        return vendedor;
-    },
-    eliminarCliente: async(_,{id})=>{
-        //revisar existencia
-        const vendedor = await Cliente.findById(id);
-        if (!vendedor) {
-            throw new Error('Cliente no encontrado');
-        }
-        //eliminamos
-        await Cliente.findOneAndDelete({_id: id});
-        return "Cliente eliminada";
-   },
+        },
+        autenticarCliente: async(_,{input})=>{
+            const {correo_cliente, contrasenia_cliente}=input
+            //si el usuario existe
+            const existeCliente = await Cliente.findOne({correo_cliente});
+            if(!existeCliente){
+                throw new Error('El usuario no existe')
+            }
+            //Revisar pass correcto
+            const contraCorrecta= await bcryptjs.compare(contrasenia_cliente,existeCliente.contrasenia_cliente);
+            if (!contraCorrecta) {
+                throw new Error('La constraseña es incorrecta')
+            }
+            //crear token
+            return{
+                token: crearTokenCliente(existeCliente, process.env.SECRETA, '48h')
+
+            }
+        },
+        actualizarCliente: async(_,{id, input}) => {
+            let vendedor = await Cliente.findById(id);
+            if (!vendedor) {
+                throw new Error('Cliente no encontrado');
+            }
+            //guardamos
+            vendedor = await Cliente.findOneAndUpdate({_id:id },input, {new:true});
+            return vendedor;
+        },
+        eliminarCliente: async(_,{id})=>{
+            //revisar existencia
+            const vendedor = await Cliente.findById(id);
+            if (!vendedor) {
+                throw new Error('Cliente no encontrado');
+            }
+            //eliminamos
+            await Cliente.findOneAndDelete({_id: id});
+            return "Cliente eliminada";
+        },
         nuevaEmpresa : async (_,{input})=> {
             const{nombre_empresa, numero_sucursal} = input;
 

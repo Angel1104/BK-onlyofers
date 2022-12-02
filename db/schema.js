@@ -79,12 +79,26 @@ const typeDefs = gql`
         NIT: String
     }
 
+    type Token {
+        token: String
+    }
+
     input VendedorInput{
         nombre_vendedor: String!
         apellido_vendedor: String!
         correo_vendedor: String!
         contrasenia_vendedor: String!
         NIT: String!
+    }
+
+    input AutenticarVInput{
+        correo_vendedor: String!
+        contrasenia_vendedor: String!
+        NIT: String!
+    }
+    input AutenticarCInput{
+        correo_cliente: String!
+        contrasenia_cliente: String!
     }
 
     type Cliente{
@@ -121,10 +135,12 @@ const typeDefs = gql`
         #vendedores
         obtenerVendedor(correo_vendedor: String!): Vendedor
         obtenerVendedores: [Vendedor]
+        obtenerVendedorToken(token:String!): Vendedor
 
         #clientes
         obtenerCliente(correo_cliente: String!): Cliente
         obtenerClientes: [Cliente]
+        obtenerClienteToken(token:String!): Cliente
     }
 
 
@@ -151,11 +167,13 @@ const typeDefs = gql`
         nuevoVendedor(input: VendedorInput) : Vendedor
         actualizarVendedor(id: ID!, input: VendedorInput): Vendedor
         eliminarVendedor(id: ID!): String
+        autenticarVendedor(input: AutenticarVInput) : Token
 
         #cliente
         nuevoCliente(input: ClienteInput): Cliente
         actualizarCliente(id: ID!, input: VendedorInput): Cliente
         eliminarCliente(id: ID!): String
+        autenticarCliente(input: AutenticarCInput) : Token
     }
 `;
 
