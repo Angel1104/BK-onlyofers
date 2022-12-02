@@ -50,7 +50,6 @@ const typeDefs = gql`
         tipo_producto: String
         empresa : String
         estado: EstadoProducto
-        imagen: String
     }
 
     input ProductoInput{
@@ -63,7 +62,6 @@ const typeDefs = gql`
         tipo_producto: String!
         empresa: String!
         estado: EstadoProducto
-        imagen: String!
     }
     enum EstadoProducto {
         DISPONIBLE

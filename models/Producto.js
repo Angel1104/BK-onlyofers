@@ -44,11 +44,6 @@ const ProductosSchema = mongoose.Schema({
     estado: {
         type:String,
         default: "DISPONIBLE"
-    },
-    imagen: {
-        type: String,
-        require: true,
-        trim: true
     }
 });
 
