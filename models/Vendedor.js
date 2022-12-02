@@ -23,7 +23,7 @@ const VendedorSchema = mongoose.Schema({
         trim: true
     },
     NIT: {
-        type: Number,
+        type: String,
         require: true,
         trim: true
     }

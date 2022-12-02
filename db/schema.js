@@ -76,7 +76,7 @@ const typeDefs = gql`
         apellido_vendedor: String
         correo_vendedor: String
         contrasenia_vendedor: String
-        NIT: Int
+        NIT: String
     }
 
     input VendedorInput{
@@ -84,7 +84,7 @@ const typeDefs = gql`
         apellido_vendedor: String!
         correo_vendedor: String!
         contrasenia_vendedor: String!
-        NIT: Int!
+        NIT: String!
     }
 
     type Cliente{
